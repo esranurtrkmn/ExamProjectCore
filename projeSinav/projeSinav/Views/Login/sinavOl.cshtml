@@ -1,0 +1,175 @@
+﻿
+@{
+    ViewData["Title"] = "sinavOl";
+}
+<html>
+<head>
+
+    <p><b>A New Way to Plug a Human Brain Into a Computer: via Veins</p></b>
+    <p>
+        THE HARD PART of connecting a gooey, thinking brain to a cold, one-ing and zero-ing computer is getting information through your thick skull—or mine, or anyone’s. The whole point of a skull, after all, is keeping a brain safely separate from [waves hands at everything].
+        So if that brain isn’t yours, the only way to tell what’s going on inside it is inference. People make very educated guesses based on what that brain tells a body to do—like, if the body makes some noises that you can understand (that’s speech) or moves around in a recognizable way. That’s a problem for people trying to understand how the brain works, and an even bigger problem for people who because of injury or illness can’t move or speak. Sophisticated imaging technologies like functional magnetic resonance can give you some clues. But it’d be great to have something more direct. For decades, technologists have been trying to get brains to interface with computer keyboards or robot arms, to get meat to commune with silicon.
+        On Wednesday, a team of scientists and engineers showed results from a promising new approach. It involves mounting electrodes on an expandable, springy tube called a stent and threading it through a blood vessel that leads to the brain. In tests on two people, the researchers literally went for the jugular, running a stent-tipped wire up that vein in the throat and then into a vessel near the brain’s primary motor cortex, where they popped the spring. The electrodes snuggled into the vessel wall and started sensing when the people’s brains signaled their intention to move—and sent those signals wirelessly to a computer, via an infrared transmitter surgically inserted in the subjects’ chests. In an article published in the Journal of NeuroInterventional Surgery, the Australian and US researchers describe how two people with paralysis due to amyotrophic lateral sclerosis (better known as Lou Gehrig’s disease) used such a device to send texts and fool around online by brain-control alone.
+        “Self-expanding stent technology has been well demonstrated in both cardiac and neurological applications to treat other disease. We just use that feature and put electrodes on top of the stent,” says Thomas Oxley, an interventional neurologist and CEO of Synchron, the company hoping to commercialize the technology. “It’s fully implantable. Patients go home in a couple of days. And it’s plug-and-play.”
+
+    </p>
+
+
+    <style>
+        body {
+            font-size: 20px;
+            font-family: sans-serif;
+            color: #333;
+        }
+
+        .question {
+            font-weight: 600;
+        }
+
+        .answers {
+            margin-bottom: 20px;
+        }
+
+        #submit {
+            font-family: sans-serif;
+            font-size: 20px;
+            background-color: #297;
+            color: #fff;
+            border: 0px;
+            border-radius: 3px;
+            padding: 20px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+            #submit:hover {
+                background-color: #3a8;
+            }
+    </style>
+
+    <div id="quiz"></div>
+    <button id="submit">Get Results</button>
+    <div id="results"></div>
+
+
+    <script>
+        function generateQuiz(questions, quizContainer, resultsContainer, submitButton) {
+
+            function showQuestions(questions, quizContainer) {
+                
+                var output = [];
+                var answers;
+
+                
+                for (var i = 0; i < questions.length; i++) {
+
+                    
+                    answers = [];
+
+                    
+                    for (letter in questions[i].answers) {
+
+                        
+                        answers.push(
+                            '<label>'
+                            + '<input type="radio" name="question' + i + '" value="' + letter + '">'
+                            + letter + ': '
+                            + questions[i].answers[letter]
+                            + '</label>'
+                        );
+                    }
+
+                    
+                    output.push(
+                        '<div class="question">' + questions[i].question + '</div>'
+                        + '<div class="answers">' + answers.join('') + '</div>'
+                    );
+                }
+
+                
+                quizContainer.innerHTML = output.join('');
+            }
+
+            function showResults(questions, quizContainer, resultsContainer) {
+                
+                var answerContainers = quizContainer.querySelectorAll('.answers');
+
+                
+                var userAnswer = '';
+                var numCorrect = 0;
+
+                
+                for (var i = 0; i < questions.length; i++) {
+
+                    
+                    userAnswer = (answerContainers[i].querySelector('input[name=question' + i + ']:checked') || {}).value;
+
+                    
+                    if (userAnswer === questions[i].correctAnswer) {
+                        
+                        numCorrect++;
+
+                        
+                        answerContainers[i].style.color = 'lightgreen';
+                    }
+                    
+                    else {
+                        
+                        answerContainers[i].style.color = 'red';
+                    }
+                }
+
+                
+                resultsContainer.innerHTML = ' your score is: ' + numCorrect;
+            }
+
+            
+            showQuestions(questions, quizContainer);
+
+            
+            submitButton.onclick = function () {
+                showResults(questions, quizContainer, resultsContainer);
+            }
+        }
+
+
+
+
+        var myQuestions = [
+            {
+                question: "What exactly is the subject of the text?",
+                answers: {
+                    a: 'technology breakthrough',
+                    b: 'technology starts working on the human brain',
+                    c: 'technology commercialization'
+                },
+                correctAnswer: 'b'
+            },
+            {
+                question: "What kinds of studies have been started on the human brain?",
+                answers: {
+                    a: 'It involves mounting electrodes on an expandable, springy tube called a stent and threading it through a blood vessel that leads to the brain. In tests on two people, the researchers literally went for the jugular, running a stent-tipped wire up that vein in the throat and then into a vessel near the brain’s primary motor cortex, where they popped the spring. The electrodes snuggled into the vessel wall and started sensing when the people’s brains signaled their intention to move—and sent those signals wirelessly to a computer',
+                    b: '5In an article published in the Journal of NeuroInterventional Surgery, the Australian and US researchers describe how two people with paralysis due to amyotrophic lateral sclerosis (better known as Lou Gehrig’s disease) used such a device to send texts and fool around online by brain-control alone.',
+                    c: 'The hard part of connecting a gooey, thinking brain to a cold, one-ing and zero-ing computer is getting information through your thick skull—or mine, or anyone’s. The whole point of a skull, after all, is keeping a brain safely separate from [waves hands at everything].'
+                },
+                correctAnswer: 'a'
+            }
+
+            
+        ];
+
+        var quizContainer = document.getElementById('quiz');
+        var resultsContainer = document.getElementById('results');
+        var submitButton = document.getElementById('submit');
+
+        generateQuiz(myQuestions, quizContainer, resultsContainer, submitButton);
+
+
+
+
+    </script>
+
+
+
+</head>
+</html>
